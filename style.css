@@ -1584,11 +1584,12 @@ ul {
     padding-top: 4rem;
     gap: 2.5rem;
     box-shadow: var(--shadow-lg);
-    transform: translateY(-100%);
+    transform: translateY(-110%);
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.4s ease, opacity 0.3s ease;
-    z-index: 999;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    z-index: 1001;
+    overflow-y: auto;
   }
   .nav-menu.active {
     transform: translateY(0);
