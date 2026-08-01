@@ -111,34 +111,55 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // 5. INTERACTIVE CONTACT FORM & SUCCESS MODAL
+  // 5. INTERACTIVE CONTACT FORM — EMAIL + WHATSAPP INTEGRATION
   const contactForm = document.getElementById('contactForm');
   const successModal = document.getElementById('successModal');
   const closeModalBtn = document.getElementById('closeModalBtn');
 
   if (contactForm && successModal) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault(); // Prevent page reload
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-      // Simulate a small loading period before success modal
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
-      
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="text-gradient">Processing...</span>';
+      submitBtn.innerHTML = '<span class="text-gradient">Sending...</span>';
 
-      setTimeout(() => {
-        // Reset button
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalText;
+      // Gather form data
+      const formData = new FormData(contactForm);
+      const name  = formData.get('clientName') || '';
+      const phone = formData.get('clientPhone') || '';
+      const email = formData.get('clientEmail') || '';
+      const industry = formData.get('businessType') || '';
+      const package_ = formData.get('selectedPlan') || '';
+      const reqs   = formData.get('clientMessage') || '';
 
-        // Show beautiful custom modal
-        successModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+      try {
+        // 1. Send to email via FormSubmit
+        await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData
+        });
+      } catch (_) { /* continue even if email fails */ }
 
-        // Reset form
-        contactForm.reset();
-      }, 1000);
+      // 2. Open WhatsApp pre-filled
+      const waMsg = encodeURIComponent(
+        `*New Inquiry — MyDigitalStore.In*%0A%0A` +
+        `👤 *Name:* ${name}%0A` +
+        `📞 *Phone:* ${phone}%0A` +
+        `📧 *Email:* ${email}%0A` +
+        `🏭 *Industry:* ${industry}%0A` +
+        `📦 *Package:* ${package_}%0A` +
+        `📝 *Requirements:* ${reqs}`
+      );
+      window.open(`https://wa.me/917065188908?text=${waMsg}`, '_blank');
+
+      // 3. Show success & reset
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+      successModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      contactForm.reset();
     });
   }
 
