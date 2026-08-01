@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Gather form data and send to email
       const formData = new FormData(contactForm);
+      const name = formData.get('clientName') || '';
       const reqs = formData.get('clientMessage') || '';
 
       try {
@@ -143,9 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       } catch (_) { /* continue even if email fails */ }
 
-          // 2. Open WhatsApp with simple message + requirements if any
-          const baseMsg = `Hello MyDigitalStore.In, I'm looking for digital growth services for my business.`;
-          const waMsg = encodeURIComponent(reqs ? `${baseMsg} ${reqs}` : baseMsg);
+          // 2. Open WhatsApp — name + requirements only
+          let msg = `Hello MyDigitalStore.In, I'm looking for digital growth services for my business. My name is ${name}.`;
+          if (reqs) msg += ` ${reqs}`;
+          const waMsg = encodeURIComponent(msg);
       window.open(`https://wa.me/917065188908?text=${waMsg}`, '_blank');
 
       // 3. Show success & reset
