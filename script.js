@@ -131,13 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="text-gradient">Sending...</span>';
 
-      // Gather form data
+      // Gather form data and send to email
       const formData = new FormData(contactForm);
-      const name  = formData.get('clientName') || '';
-      const phone = formData.get('clientPhone') || '';
-      const email = formData.get('clientEmail') || '';
-      const industry = formData.get('businessType') || '';
-      const reqs   = formData.get('clientMessage') || '';
 
       try {
         // 1. Send to email via FormSubmit
@@ -147,14 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       } catch (_) { /* continue even if email fails */ }
 
-          // 2. Open WhatsApp with a natural client inquiry message
+          // 2. Open WhatsApp with a simple pre-filled message
           const waMsg = encodeURIComponent(
-            `Hello MyDigitalStore.In, I'm looking for digital growth services for my business. Here are my details:\n\n` +
-            `👤 ${name}\n` +
-            `📞 ${phone}\n` +
-            `📧 ${email}\n` +
-            `🏭 ${industry}\n` +
-            `📝 ${reqs}`
+            `Hello MyDigitalStore.In, I'm looking for digital growth services for my business.`
           );
       window.open(`https://wa.me/917065188908?text=${waMsg}`, '_blank');
 
