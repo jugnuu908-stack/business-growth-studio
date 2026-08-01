@@ -120,6 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      // Validate required fields first
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
       submitBtn.disabled = true;
@@ -131,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = formData.get('clientPhone') || '';
       const email = formData.get('clientEmail') || '';
       const industry = formData.get('businessType') || '';
-      const package_ = formData.get('selectedPlan') || '';
       const reqs   = formData.get('clientMessage') || '';
 
       try {
@@ -142,15 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       } catch (_) { /* continue even if email fails */ }
 
-      // 2. Open WhatsApp pre-filled
+      // 2. Open WhatsApp with a friendly pre-filled message
       const waMsg = encodeURIComponent(
-        `*New Inquiry — MyDigitalStore.In*%0A%0A` +
-        `👤 *Name:* ${name}%0A` +
-        `📞 *Phone:* ${phone}%0A` +
-        `📧 *Email:* ${email}%0A` +
-        `🏭 *Industry:* ${industry}%0A` +
-        `📦 *Package:* ${package_}%0A` +
-        `📝 *Requirements:* ${reqs}`
+        `Hi MyDigitalStore.In, thank you for being available! I'm reaching out from your website.%0A%0A` +
+        `Here are my details —%0A` +
+        `👤 Name: ${name}%0A` +
+        `📞 Phone: ${phone}%0A` +
+        `📧 Email: ${email}%0A` +
+        `🏭 Industry: ${industry}%0A` +
+        `📝 Requirements: ${reqs}`
       );
       window.open(`https://wa.me/917065188908?text=${waMsg}`, '_blank');
 
