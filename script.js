@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Gather form data and send to email
       const formData = new FormData(contactForm);
+      const reqs = formData.get('clientMessage') || '';
 
       try {
         // 1. Send to email via FormSubmit
@@ -142,10 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       } catch (_) { /* continue even if email fails */ }
 
-          // 2. Open WhatsApp with a simple pre-filled message
-          const waMsg = encodeURIComponent(
-            `Hello MyDigitalStore.In, I'm looking for digital growth services for my business.`
-          );
+          // 2. Open WhatsApp with simple message + requirements if any
+          const baseMsg = `Hello MyDigitalStore.In, I'm looking for digital growth services for my business.`;
+          const waMsg = encodeURIComponent(reqs ? `${baseMsg} ${reqs}` : baseMsg);
       window.open(`https://wa.me/917065188908?text=${waMsg}`, '_blank');
 
       // 3. Show success & reset
