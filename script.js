@@ -147,16 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       } catch (_) { /* continue even if email fails */ }
 
-      // 2. Open WhatsApp with a friendly pre-filled message
-      const waMsg = encodeURIComponent(
-        `Hi MyDigitalStore.In, thank you for being available! I'm reaching out from your website.%0A%0A` +
-        `Here are my details —%0A` +
-        `👤 Name: ${name}%0A` +
-        `📞 Phone: ${phone}%0A` +
-        `📧 Email: ${email}%0A` +
-        `🏭 Industry: ${industry}%0A` +
-        `📝 Requirements: ${reqs}`
-      );
+          // 2. Open WhatsApp with a natural client inquiry message
+          const waMsg = encodeURIComponent(
+            `Hello MyDigitalStore.In, I'm looking for digital growth services for my business. Here are my details:\n\n` +
+            `👤 ${name}\n` +
+            `📞 ${phone}\n` +
+            `📧 ${email}\n` +
+            `🏭 ${industry}\n` +
+            `📝 ${reqs}`
+          );
       window.open(`https://wa.me/917065188908?text=${waMsg}`, '_blank');
 
       // 3. Show success & reset
